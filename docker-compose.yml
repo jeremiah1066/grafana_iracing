@@ -1,0 +1,42 @@
+version: "3"
+services:
+  influx:
+    image: "influxdb:2.0"
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      - "DOCKER_INFLUXDB_INIT_USERNAME=admin"
+      - "INFLUXDB_ADMIN_USER=admin"
+      - "DOCKER_INFLUXDB_INIT_PASSWORD=password"
+      - "INFLUXDB_ADMIN_PASSWORD=password"
+      - "DOCKER_INFLUXDB_INIT_ORG=longdogracing"
+      - "DOCKER_INFLUXDB_INIT_BUCKET=test-bucket"
+
+  grafana:
+    image: "grafana/grafana"
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - "GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource"
+      - "GF_AUTH_ANONYMOUS_ENABLED=true"
+      - "GF_AUTH_ORG_ROLE=viewer"
+      - "GF_AUTH_ANONYMOUS_ORG_ROLE=Admin"
+      - "GF_AUTH_DISABLE_LOGIN_FORM=true"
+    volumes:
+      - type: bind
+        source: ./grafana/grafana.ini
+        target: /etc/grafana/grafana.ini
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+      - 8080:8080
+    volumes:
+    - type: bind
+      source: ./nginx/iracing.conf
+      target: /etc/nginx/conf.d/iracing.conf
+    - type: bind
+      source: ./influxdb
+      target: /root/influxdb/data
