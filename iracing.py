@@ -15,7 +15,7 @@ from influxdb_client.client.write_api import SYNCHRONOUS, ASYNCHRONOUS
 
 
 # You can generate a Token from the "Tokens Tab" in the UI
-token = "XO2XsIF_k5PLhnxvqzY997QLBjF1Ygx2xD2iH9BKqx88QsWis5FyQTqUqsFgEiiMw87qOVVaZmhJyB9Og3C8BQ=="
+token = ""
 org = "iracing"
 bucket = "iracing_data"
 
